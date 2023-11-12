@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books List</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #0e3947;
+      font-size: larger;
+      color: #f8f8f8;
+    }
+
+    #loluwa {
+      max-width: 400px;
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 5);
+      background-color: #0d323e;
+    }
+
+    #loluwa label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    #loluwa input,
+    #loluwa textarea,
+    #loluwa button {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div id="server-msg" class="alert alert-success transition ease-in-out scale-y-0">
+    <span id="server-msg-textcontent"></span>
+  </div>
+
+  <form id="loluwa" method="post" action="/book" style="margin: auto;">
+    <label for="Title">Title:</label>
+    <input type="text" id="Title" name="Title" required>
+    <br>
+    <label for="Description">Description:</label>
+    <textarea id="Description" name="Description"></textarea>
+    <br>
+    <label for="Pages">Pages:</label>
+    <input type="number" id="Pages" name="Pages" required>
+    <br>
+    <label for="ReleaseDate">Release Date:</label>
+    <input type="date" id="ReleaseDate" name="ReleaseDate" required>
+    <br>
+    <button id="AddButton" style="text-align: center; background-color: #008002; border-radius: 5px;" type="submit">Add Book</button>
+  </form>
+
+  <div class="flex flex-wrap items-center items-stretch justify-center">
+    <table class="table w-full">
+      <thead>
+          <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Delete</th>
+          </tr>
+      </thead>
+      <tbody>
+        <% books.forEach(book => { %>
+          <tr>
+              <td>
+                <p><%= book.Id %></p>
+              </td>
+              <td>
+                <a href="/book/<%= book.Id %>"><%= book.Title %></a>
+              </td>
+              <td>
+                <form method="post" action="/book/<%= book.Id %>/delete" style="display:inline;">
+                  <button id="DeleteButton" type="submit" style="background-color: #008002;color: #f8f8f8;width:100%;">Delete</button>
+                </form>
+              </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const set_server_response_message = (msg, is_error) => {
+        const server_err_msg = document.getElementById("server-msg");
+        const server_err_msg_textcontent = document.getElementById("server-msg-textcontent");
+        server_err_msg.classList.remove("alert-success", "alert-error", "scale-y-0")
+        server_err_msg.classList.add(is_error ? "alert-error" : "alert-success")
+        server_err_msg_textcontent.textContent = msg
+
+        if(!is_error) {
+            setTimeout(() => {
+                server_err_msg_textcontent.textContent = ""
+                server_err_msg.classList.add(["scale-y-0"])
+            }, 5000)
+        }
+    }
+    const print_server_response = (res) => {
+        set_server_response_message(res.statusText, !res.ok);
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= book.Title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #0e3947;
+      font-size: larger;
+      color: #f8f8f8;
+    }
+
+    #loluwa {
+      max-width: 400px;
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 5);
+      background-color: #0d323e;
+    }
+
+    #loluwa label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    #loluwa input,
+    #loluwa textarea,
+    #loluwa button {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1 style="font-size: 24px;"><%= book.Title %></h1>
+    <p>ID: <%= book.Id %></p>
+    <p>Description: <%= book.Description %></p>
+    <p>Pages: <%= book.Pages %></p>
+    <p>Release Date: <%= book.ReleaseDate.toISOString().split('T')[0] %></p>
+  </div>
+
+  <form method="post" action="/book/<%= book.Id %>" id="loluwa">
+    <label for="title">Title:</label>
+    <input type="text" id="Title" name="Title" value="<%= book.Title %>" required>
+    <br>
+    <label for="description">Description:</label>
+    <textarea id="Description" name="Description"><%= book.Description %></textarea>
+    <br>
+    <label for="pages">Pages:</label>
+    <input type="number" id="Pages" name="Pages" value="<%= book.Pages %>" required>
+    <br>
+    <label for="releaseDate">Release Date:</label>
+    <input type="date" id="ReleaseDate" name="ReleaseDate" value="<%= book.ReleaseDate.toISOString().split('T')[0] %>" required>
+    <br>
+    <button type="submit" style="text-align: center; background-color: #008002; border-radius: 5px;" >Update Book</button>
+  </form>
+
+  <a href="/">Back to home</a>
+</body>
+</html>
